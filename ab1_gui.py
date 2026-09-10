@@ -12,6 +12,7 @@ import os
 import re
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
+import tkinter.font as tkfont
 
 import numpy as np
 import pandas as pd
@@ -223,6 +224,14 @@ class Ab1App(tk.Tk):
         self.geometry(f"{win_w}x{win_h}+{x}+{y}")
         self.minsize(900, 650)
 
+        # 跨平台等寬字型：Mac 解析成 SF Mono / Menlo，Windows 解析成 Consolas，Linux 對應等寬字
+        self.seq_font = tkfont.nametofont("TkFixedFont").copy()
+        self.seq_font.configure(size=13)
+        self.seq_font_bold = tkfont.nametofont("TkFixedFont").copy()
+        self.seq_font_bold.configure(size=13, weight="bold")
+        self.credit_font = tkfont.nametofont("TkDefaultFont").copy()
+        self.credit_font.configure(size=11)
+
         self.data = None
         self.df = None
         self.consensus = ""
@@ -254,7 +263,7 @@ class Ab1App(tk.Tk):
     def _build_title_bar(self):
         ttk.Label(self, text="Author: CH Hsieh | SangerScanner-ver1.0.0",
                   foreground="#616161", anchor="center",
-                  font=("Menlo", 11)).pack(side=tk.TOP, fill=tk.X, pady=(6, 0))
+                  font=self.credit_font).pack(side=tk.TOP, fill=tk.X, pady=(6, 0))
 
     def _build_top_bar(self):
         bar = ttk.Frame(self, padding=8)
@@ -359,14 +368,14 @@ class Ab1App(tk.Tk):
 
         seq_body = ttk.Frame(seq_container)
         seq_body.grid(row=1, column=0, sticky="nsew", padx=4)
-        self.seq_text = tk.Text(seq_body, wrap="char", font=("Menlo", 13),
+        self.seq_text = tk.Text(seq_body, wrap="char", font=self.seq_font,
                                  width=self.seq_row_width.get() + self.SEQ_PREFIX_LEN + 2)
         seq_yscroll = ttk.Scrollbar(seq_body, orient="vertical", command=self.seq_text.yview)
         self.seq_text.configure(yscrollcommand=seq_yscroll.set)
         self.seq_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         seq_yscroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.seq_text.tag_configure("het", background="#FFA726", foreground="#000000",
-                                     font=("Menlo", 13, "bold"))
+                                     font=self.seq_font_bold)
         self.seq_text.tag_configure("current", background="#FFF176")
         self.seq_text.tag_configure("posnum", foreground="#9E9E9E")
         self.seq_text.tag_raise("het")  # 雙峰的橘色標示優先於目前範圍的黃色標示
