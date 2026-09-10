@@ -1,0 +1,14 @@
+# build output
+build/
+dist/
+*.spec
+build_venv/
+__pycache__/
+
+# local data / not needed for the build
+*.ab1
+*.xlsx
+*.pdf
+*.ipynb
+C26 9-56_CPAR2_808110-F/
+.DS_Store
