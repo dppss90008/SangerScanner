@@ -7,6 +7,7 @@ __pycache__/
 
 # local data / not needed for the build
 *.ab1
+!C26 9-56_CPAR2_808110-F.ab1
 *.xlsx
 *.pdf
 *.ipynb
